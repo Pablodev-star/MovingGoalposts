@@ -1,31 +1,36 @@
 # Moving Goalposts — nebulaglow
 
-A real-time music video for **Moving Goalposts**, rendered live in the browser and synced word by word to the song.
+A music video for **Moving Goalposts**, rendered in real time in the browser (WebGL2) and cut to the song.
 
 ▶ **Watch:** https://pablodev-star.github.io/MovingGoalposts/
 
-## How it works
+## The film
 
-- `index.html` plays `Moving Goalposts.mp3` and draws every frame on a `<canvas>` as a pure function of the song time, so seeking, pausing and frame-exact export all stay in sync.
-- `js/sync.js` holds the analysis: tempo (91.28 BPM, 4/4, downbeat grid), section map, per-word lyric timings and 30 fps audio envelopes (kick, snare, hats, bass, mids).
-- `js/engine.js` (timing + tiny 3D camera), `js/world.js` (pitch, goalposts, ball, floodlights…), `js/ui.js` (interface glyphs), `js/lyrics.js` (kinetic typography), `js/scenes.js` (the director), `js/main.js` (compositor, bloom, grain, player).
+Thirty shots, a new one every two bars (every two sung lines), each cut on a downbeat:
 
-### Story
+| Section | Shots |
+| --- | --- |
+| Intro | A night desk like the cover: laptop glow, a worn sneaker, rain on the city behind the window |
+| Verse 1 | Rooftops in time-lapse (dawn → night) · a chart drawn in constellations · one tree racing through the seasons · a night-train window in the rain that slows and splits into panes |
+| Pre-chorus | A green oscilloscope re-tuned on every word |
+| Chorus 1 | A gyroscope of brass rings stepping on each beat, then a glass ceiling · goalposts in a salt desert: the sun jumps on "I change the time", a line is drawn in the sand and moved · an empty gold frame that finally holds the work · a colossal wall that slides away on "call" |
+| Verse 2 | Channel-surfing on an old CRT · a night sea with a few lanterns drifting · a misty forest crossed by red laser limits · a phone booth in the snow; the street lamp dies on "why" |
+| Pre-chorus 2 | Nixie tubes counting attempts |
+| Chorus 2 | The same places, changed: crimson rings, a moonlit row of drifting goals, an endless corridor of frames, the wall in a storm |
+| Bridge | A relief map running out into blank paper · sinking underwater to find no switch, only glowing things · the tree at night among fireflies · a river of light that stalls while lanterns rise on their own |
+| Final chorus | The desk at dawn · ink on paper: a goal, a line, the line dragged elsewhere · the rooftop at sunrise with a glowing frame · paper planes above the clouds |
+| Outro | The screen again, a new line rising · twilight in the desert as the goals keep moving · title |
 
-A creator's work (the glowing ball) chases goalposts that keep moving. The rules page becomes the pitch; the grind is a timeline of clips; the machine's little dance is a goal stepping on every beat; the wall of small numbers slides away when called; verse 2 is squeezed into a vertical feed; the bridge drops beneath the field to find no master switch — only the hand-made things you keep making, which float up on their own even when the feed stops.
+Rendering: raymarched and 2D procedural fragment shaders → HDR targets → bloom, halation, ACES tone map, grade, grain, gate weave and letterbox. Animation follows the song's kick/snare/bass envelopes; key moments are keyed to word times from the lyric analysis. Lyrics are optional (CC button, off by default).
 
-### Lyric sync
+## Code
 
-Word timings come from two independent passes that agree within ~60 ms median:
-1. NVIDIA Parakeet TDT (ONNX via sherpa-onnx) transcription with token timestamps, three overlapping window offsets, aligned to the known lyrics (`tools/asr_parakeet.py`, `tools/anchors.py`);
-2. PocketSphinx forced alignment of the known lyrics (`tools/align_pocketsphinx.py`, `tools/align_chunks.py`).
+- `js/sync.js` — analysis: 91.28 BPM grid, sections, word-level lyric times, 30 fps audio envelopes (see `tools/`).
+- `js/core.js` — timing helpers. `js/director.js` — the edit (shots, events, transitions, grade).
+- `js/gl.js` — WebGL2 renderer and post-processing. `js/paint.js` — illustrations painted once to textures.
+- `js/shaders/scenes*.js` — one fragment shader per location.
+- `js/main.js` — player, audio clock, adaptive resolution, titles, capture API (`?capture=1&w=1280` exposes `__MG.renderAt(t)` / `__MG.snapshot()`).
 
-`tools/build_sync.py` merges them and computes the envelopes (librosa).
+Keys: Space play/pause · ←/→ seek · F fullscreen · C subtitles. `?t=84` starts at a given second, `?q=0.5` forces a render scale.
 
-## Controls
-
-Space play/pause · ←/→ seek 5 s · F fullscreen · C toggle lyrics. Append `?t=84` to start at a given second.
-
-`?capture=1&w=1920` exposes `window.__MG.renderAt(t)` for offline frame export.
-
-Fonts: Archivo, JetBrains Mono, Caveat (SIL Open Font License).
+Fonts: Instrument Serif, JetBrains Mono (SIL Open Font License).
