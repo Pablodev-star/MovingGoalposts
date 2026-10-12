@@ -82,7 +82,7 @@ float jelly(vec2 p,float t,float sz,out float tent){
 void main(){
   vec2 uv=scr(gl_FragCoord.xy);
   float depth=S(-.5,ev(2)+.5,uT); // 0 near surface .. 1 abyss
-  vec3 deepC=mix(vec3(.02,.25,.35),vec3(.0,.01,.03),depth);
+  vec3 deepC=mix(vec3(.02,.25,.35),vec3(.01,.045,.09),depth);
   vec3 col=mix(deepC*.4,deepC*1.4,S(-.6,.6,uv.y));
   // surface + snell window, seen while we are still shallow
   float surfY=.55+depth*1.5;
