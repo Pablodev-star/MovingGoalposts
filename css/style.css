@@ -1,0 +1,46 @@
+@font-face { font-family: Archivo; font-weight: 300; font-display: block; src: url(../assets/fonts/archivo-latin-300-normal.woff2) format('woff2'); }
+@font-face { font-family: Archivo; font-weight: 500; font-display: block; src: url(../assets/fonts/archivo-latin-500-normal.woff2) format('woff2'); }
+@font-face { font-family: Archivo; font-weight: 800; font-display: block; src: url(../assets/fonts/archivo-latin-800-normal.woff2) format('woff2'); }
+@font-face { font-family: Archivo; font-weight: 900; font-display: block; src: url(../assets/fonts/archivo-latin-900-normal.woff2) format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 400; font-display: block; src: url(../assets/fonts/jetbrains-mono-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 700; font-display: block; src: url(../assets/fonts/jetbrains-mono-latin-700-normal.woff2) format('woff2'); }
+@font-face { font-family: Caveat; font-weight: 500; font-display: block; src: url(../assets/fonts/caveat-latin-500-normal.woff2) format('woff2'); }
+@font-face { font-family: Caveat; font-weight: 700; font-display: block; src: url(../assets/fonts/caveat-latin-700-normal.woff2) format('woff2'); }
+
+:root { --ink: #03080c; --chalk: #e9f3ef; --orange: #ff8a3d; --cyan: #7ff5e0; --mute: rgba(233, 243, 239, .55); }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #000; color: var(--chalk); overflow: hidden; font-family: 'JetBrains Mono', ui-monospace, monospace; }
+body { display: grid; place-items: center; -webkit-tap-highlight-color: transparent; }
+body.idle { cursor: none; }
+#stage { display: block; background: var(--ink); }
+.capture body, html.capture body { display: block; }
+html.capture #start, html.capture #controls { display: none !important; }
+
+/* start screen */
+#start { position: fixed; inset: 0; display: grid; place-items: center; background: radial-gradient(ellipse at 50% 60%, rgba(3, 8, 12, .55), rgba(0, 0, 0, .92) 70%); transition: opacity .6s ease, visibility .6s; z-index: 5; text-align: center; padding: 16px; }
+#start.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+#start h1 { margin: 0; font: 900 clamp(44px, 9vw, 132px)/.9 Archivo, sans-serif; letter-spacing: -.01em; }
+#start h1 span { display: block; color: var(--orange); animation: slide 3.2s cubic-bezier(.7, 0, .2, 1) infinite; }
+@keyframes slide { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(.18em); } 60% { transform: translateX(-.12em); } }
+#start .by { margin: 18px 0 34px; letter-spacing: .5em; font-size: clamp(12px, 1.6vw, 18px); color: var(--mute); }
+#playBtn { appearance: none; border: 2px solid var(--chalk); background: transparent; color: var(--chalk); font: 700 16px 'JetBrains Mono', monospace; letter-spacing: .3em; padding: 18px 34px 18px 38px; cursor: pointer; display: inline-flex; gap: 14px; align-items: center; transition: background .2s, color .2s; }
+#playBtn:hover, #playBtn:focus-visible { background: var(--chalk); color: var(--ink); outline: none; }
+#playBtn svg { width: 16px; height: 16px; fill: currentColor; }
+#start .hint { margin-top: 22px; font-size: 12px; color: var(--mute); letter-spacing: .15em; }
+
+/* controls */
+#controls { position: fixed; left: 0; right: 0; bottom: 0; padding: 14px 20px 18px; display: flex; gap: 16px; align-items: center; background: linear-gradient(transparent, rgba(0, 0, 0, .75)); opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; z-index: 4; }
+#controls.show { opacity: 1; transform: none; }
+#controls button { appearance: none; background: none; border: 0; color: var(--chalk); cursor: pointer; padding: 6px; display: grid; place-items: center; opacity: .9; }
+#controls button:hover { opacity: 1; }
+#controls button svg { width: 22px; height: 22px; fill: currentColor; }
+#controls #cc { font: 700 12px 'JetBrains Mono', monospace; border: 1.5px solid currentColor; padding: 3px 6px; border-radius: 3px; }
+#controls #cc.off { opacity: .4; }
+#pp .i-pause { display: none; } body.playing #pp .i-pause { display: block; } body.playing #pp .i-play { display: none; }
+#track { position: relative; flex: 1; height: 22px; cursor: pointer; touch-action: none; }
+#track::before { content: ''; position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: rgba(233, 243, 239, .25); }
+#fill { position: absolute; left: 0; top: 10px; height: 2px; background: var(--orange); width: 0; }
+#fill::after { content: ''; position: absolute; right: -6px; top: -5px; width: 12px; height: 12px; border-radius: 50%; background: var(--orange); }
+#ticks i { position: absolute; top: 6px; width: 2px; height: 10px; background: rgba(233, 243, 239, .5); }
+#time { font-size: 12px; color: var(--mute); min-width: 92px; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 600px) { #controls { gap: 8px; padding: 10px 16px 14px; } #time { min-width: 0; } }

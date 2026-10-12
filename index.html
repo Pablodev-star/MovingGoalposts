@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Moving Goalposts — nebulaglow</title>
+  <meta name="description" content="Moving Goalposts by nebulaglow — a real-time music video, synced word by word to the song.">
+  <meta name="theme-color" content="#03080c">
+  <link rel="preload" href="assets/fonts/archivo-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2303080c'/%3E%3Cpath d='M7 26V9h18v17' fill='none' stroke='%23e9f3ef' stroke-width='3'/%3E%3Ccircle cx='16' cy='23' r='3' fill='%23ff8a3d'/%3E%3C/svg%3E">
+</head>
+<body>
+  <canvas id="stage" aria-label="Moving Goalposts music video"></canvas>
+  <audio id="song" src="Moving%20Goalposts.mp3" preload="auto"></audio>
+
+  <section id="start">
+    <div>
+      <h1>MOVING<span>GOALPOSTS</span></h1>
+      <div class="by">NEBULAGLOW</div>
+      <button id="playBtn" type="button"><svg viewBox="0 0 16 16"><path d="M3 1l12 7-12 7z"/></svg>PLAY</button>
+      <div class="hint">SOUND ON · SPACE PLAY/PAUSE · ←/→ SEEK · F FULLSCREEN · C LYRICS</div>
+    </div>
+  </section>
+
+  <nav id="controls">
+    <button id="pp" type="button" aria-label="Play / pause"><svg class="i-play" viewBox="0 0 16 16"><path d="M3 1l12 7-12 7z"/></svg><svg class="i-pause" viewBox="0 0 16 16"><path d="M3 1h4v14H3zM9 1h4v14H9z"/></svg></button>
+    <div id="track"><div id="ticks"></div><div id="fill"></div></div>
+    <span id="time">0:00 / 2:38</span>
+    <button id="cc" type="button" aria-label="Toggle lyrics">CC</button>
+    <button id="fs" type="button" aria-label="Fullscreen"><svg viewBox="0 0 16 16"><path d="M1 1h5v2H3v3H1zM10 1h5v5h-2V3h-3zM1 10h2v3h3v2H1zM13 10h2v5h-5v-2h3z"/></svg></button>
+  </nav>
+
+  <script src="js/sync.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/lyrics.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
